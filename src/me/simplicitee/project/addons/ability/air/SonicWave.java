@@ -99,26 +99,6 @@ public class SonicWave extends SoundAbility implements AddonAbility {
 			}
 		}
 	}
-
-	public static int[] hexToRgb(String hex) {
-		hex = hex.replace("#", "");
-		int r = Integer.parseInt(hex.substring(0, 2), 16);
-		int g = Integer.parseInt(hex.substring(2, 4), 16);
-		int b = Integer.parseInt(hex.substring(4, 6), 16);
-		return new int[]{r, g, b};
-	}
-
-	// no alpha
-	public static void displayColoredParticles(String hex, Location location, int amount, double offsetX, double offsetY, double offsetZ, double extra) {
-		displayColoredParticles(hex, location, amount, offsetX, offsetY, offsetZ, extra, 255);
-	}
-
-	// use a low alpha (range: 0-255) for ambient particles
-	public static void displayColoredParticles(String hex, Location location, int amount, double offsetX, double offsetY, double offsetZ, double extra, int alpha) {
-		if (location.getWorld() == null) return;
-		int[] color = hexToRgb(hex);
-		location.getWorld().spawnParticle(Particle.ENTITY_EFFECT, location, amount, extra, offsetX, offsetY, offsetZ, Color.fromARGB(alpha, color[0], color[1], color[2]));
-	}
 	
 	private void launch() {
 		Location origin = GeneralMethods.getMainHandLocation(player);
