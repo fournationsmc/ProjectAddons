@@ -1,8 +1,7 @@
 package me.simplicitee.project.addons;
 
-import org.bukkit.Location;
-
 import com.projectkorra.projectkorra.GeneralMethods;
+import org.bukkit.Location;
 
 public final class Util {
 
@@ -20,10 +19,6 @@ public final class Util {
 	public static double clamp(double min, double max, double value) {
 		if (value < min) {
 			return min;
-		} else if (value > max) {
-			return max;
-		} else {
-			return value;
-		}
+		} else return Math.min(value, max);
 	}
 }

@@ -1,40 +1,5 @@
 package me.simplicitee.project.addons;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityChangeBlockEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.entity.EntityToggleGlideEvent;
-import org.bukkit.event.entity.ItemMergeEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
-import org.bukkit.event.player.PlayerToggleFlightEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.Element.SubElement;
@@ -46,19 +11,10 @@ import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
 import com.projectkorra.projectkorra.board.BendingBoardManager;
 import com.projectkorra.projectkorra.event.AbilityStartEvent;
 import com.projectkorra.projectkorra.event.BendingReloadEvent;
-import com.projectkorra.projectkorra.event.PlayerBindChangeEvent;
-import com.projectkorra.projectkorra.event.PlayerChangeElementEvent;
-import com.projectkorra.projectkorra.event.PlayerCooldownChangeEvent;
 import com.projectkorra.projectkorra.object.Preset;
 import com.projectkorra.projectkorra.util.ActionBar;
 import com.projectkorra.projectkorra.util.ClickType;
-
-import me.simplicitee.project.addons.ability.air.Deafen;
-import me.simplicitee.project.addons.ability.air.FlightPassive;
-import me.simplicitee.project.addons.ability.air.GaleGust;
-import me.simplicitee.project.addons.ability.air.SonicWave;
-import me.simplicitee.project.addons.ability.air.VocalMimicry;
-import me.simplicitee.project.addons.ability.air.Zephyr;
+import me.simplicitee.project.addons.ability.air.*;
 import me.simplicitee.project.addons.ability.avatar.EnergyBeam;
 import me.simplicitee.project.addons.ability.avatar.EnergyBeam.EnergyColor;
 import me.simplicitee.project.addons.ability.chi.Dodging;
@@ -66,28 +22,37 @@ import me.simplicitee.project.addons.ability.chi.Jab;
 import me.simplicitee.project.addons.ability.chi.Jab.JabHand;
 import me.simplicitee.project.addons.ability.chi.NinjaStance;
 import me.simplicitee.project.addons.ability.chi.WeakeningJab;
-import me.simplicitee.project.addons.ability.earth.Accretion;
-import me.simplicitee.project.addons.ability.earth.Bulwark;
-import me.simplicitee.project.addons.ability.earth.Crumble;
-import me.simplicitee.project.addons.ability.earth.Dig;
-import me.simplicitee.project.addons.ability.earth.EarthKick;
-import me.simplicitee.project.addons.ability.earth.LavaSurge;
-import me.simplicitee.project.addons.ability.earth.MagmaSlap;
-import me.simplicitee.project.addons.ability.earth.QuickWeld;
-import me.simplicitee.project.addons.ability.earth.ShrapnelBlast;
-import me.simplicitee.project.addons.ability.earth.ShrapnelShot;
-import me.simplicitee.project.addons.ability.fire.ArcSpark;
-import me.simplicitee.project.addons.ability.fire.ChargeBolt;
-import me.simplicitee.project.addons.ability.fire.CombustBeam;
-import me.simplicitee.project.addons.ability.fire.Electrify;
-import me.simplicitee.project.addons.ability.fire.Explode;
-import me.simplicitee.project.addons.ability.fire.FireDisc;
-import me.simplicitee.project.addons.ability.fire.Jets;
+import me.simplicitee.project.addons.ability.earth.*;
+import me.simplicitee.project.addons.ability.fire.*;
 import me.simplicitee.project.addons.ability.water.BloodGrip;
 import me.simplicitee.project.addons.ability.water.MistShards;
 import me.simplicitee.project.addons.ability.water.PlantArmor;
 import me.simplicitee.project.addons.ability.water.RazorLeaf;
 import me.simplicitee.project.addons.util.BendingPredicate;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainListener implements Listener {
 	
@@ -471,10 +436,10 @@ public class MainListener implements Listener {
 				player.sendMessage(ProjectAddons.instance.prefix() + ChatColor.RED + " Invalid format, try `@energycolor <color>`");
 			} else {
 				EnergyColor color = EnergyColor.valueOf(args[1].toUpperCase());
-				
+
 				if (color != null) {
 					EnergyBeam.colors.put(player.getUniqueId(), color);
-					player.sendMessage(ProjectAddons.instance.prefix() + ChatColor.GREEN + " Successfully set EnergyBeam color to " + args[1].toLowerCase());	
+					player.sendMessage(ProjectAddons.instance.prefix() + ChatColor.GREEN + " Successfully set EnergyBeam color to " + args[1].toLowerCase());
 				} else {
 					player.sendMessage(ProjectAddons.instance.prefix() + ChatColor.RED + " Unknown color! Try red, blue, yellow, green, purple, orange, indigo, brown, white, or black!");
 				}
@@ -505,8 +470,13 @@ public class MainListener implements Listener {
 	
 	@EventHandler
 	public void onReload(BendingReloadEvent event) {
-		ProjectAddons.instance.config().reload();
-		event.getSender().sendMessage(ProjectAddons.instance.prefix() + " Config reloaded");
+        try {
+            ProjectAddons.instance.config().load(new File(ProjectAddons.instance.getDataFolder(), "project_addons.yml"));
+        } catch (IOException | InvalidConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+
+        event.getSender().sendMessage(ProjectAddons.instance.prefix() + " Config reloaded");
 		
 		new BukkitRunnable() {
 			@Override

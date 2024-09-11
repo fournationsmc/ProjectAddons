@@ -1,5 +1,16 @@
 package me.simplicitee.project.addons.ability.fire;
 
+import com.projectkorra.projectkorra.GeneralMethods;
+import com.projectkorra.projectkorra.ability.AddonAbility;
+import com.projectkorra.projectkorra.ability.CombustionAbility;
+import com.projectkorra.projectkorra.attribute.Attribute;
+import com.projectkorra.projectkorra.util.ActionBar;
+import com.projectkorra.projectkorra.util.DamageHandler;
+import com.projectkorra.projectkorra.util.ParticleEffect;
+import com.projectkorra.projectkorra.util.TempBlock;
+import me.simplicitee.project.addons.ProjectAddons;
+import me.simplicitee.project.addons.util.HexColor;
+import me.simplicitee.project.addons.util.SoundEffect;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,19 +22,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
-
-import com.projectkorra.projectkorra.GeneralMethods;
-import com.projectkorra.projectkorra.ability.AddonAbility;
-import com.projectkorra.projectkorra.ability.CombustionAbility;
-import com.projectkorra.projectkorra.attribute.Attribute;
-import com.projectkorra.projectkorra.util.ActionBar;
-import com.projectkorra.projectkorra.util.DamageHandler;
-import com.projectkorra.projectkorra.util.ParticleEffect;
-import com.projectkorra.projectkorra.util.TempBlock;
-
-import me.simplicitee.project.addons.ProjectAddons;
-import me.simplicitee.project.addons.util.HexColor;
-import me.simplicitee.project.addons.util.SoundEffect;
 
 public class CombustBeam extends CombustionAbility implements AddonAbility {
 
@@ -123,7 +121,7 @@ public class CombustBeam extends CombustionAbility implements AddonAbility {
 				this.damage = maxDamage;
 				this.charged = true;
 				GeneralMethods.displayColoredParticle("ff2424", player.getEyeLocation().add(player.getEyeLocation().getDirection().normalize()), 1, 0.4, 0.4, 0.4);
-				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10, 5));
+				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 10, 5));
 
 				ActionBar.sendActionBar(ChatColor.RED + "100%", player);
 			} else if (getStartTime() + minChargeTime <= System.currentTimeMillis()) {
@@ -140,7 +138,7 @@ public class CombustBeam extends CombustionAbility implements AddonAbility {
 				
 				HexColor color = new HexColor((int) (255 * percent), 136, 136);
 				GeneralMethods.displayColoredParticle(color.getHexcode(), player.getEyeLocation().add(player.getEyeLocation().getDirection().normalize()), 1, 0.4, 0.4, 0.4);
-				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10, (int) (5 * percent)));
+				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 10, (int) (5 * percent)));
 			}
 		} else {
 			if (player.isSneaking()) {

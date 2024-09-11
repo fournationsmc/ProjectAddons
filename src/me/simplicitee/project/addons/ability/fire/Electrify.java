@@ -1,10 +1,14 @@
 package me.simplicitee.project.addons.ability.fire;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.projectkorra.projectkorra.BendingPlayer;
+import com.projectkorra.projectkorra.GeneralMethods;
+import com.projectkorra.projectkorra.ability.AddonAbility;
+import com.projectkorra.projectkorra.ability.LightningAbility;
+import com.projectkorra.projectkorra.attribute.Attribute;
+import com.projectkorra.projectkorra.util.DamageHandler;
+import me.simplicitee.project.addons.ProjectAddons;
+import me.simplicitee.project.addons.Util;
+import me.simplicitee.project.addons.util.SoundEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -17,16 +21,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.projectkorra.projectkorra.BendingPlayer;
-import com.projectkorra.projectkorra.GeneralMethods;
-import com.projectkorra.projectkorra.ability.AddonAbility;
-import com.projectkorra.projectkorra.ability.LightningAbility;
-import com.projectkorra.projectkorra.attribute.Attribute;
-import com.projectkorra.projectkorra.util.DamageHandler;
-
-import me.simplicitee.project.addons.ProjectAddons;
-import me.simplicitee.project.addons.Util;
-import me.simplicitee.project.addons.util.SoundEffect;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Electrify extends LightningAbility implements AddonAbility {
 	
@@ -74,9 +72,9 @@ public class Electrify extends LightningAbility implements AddonAbility {
 		this.weakness = ProjectAddons.instance.getConfig().getInt("Abilities.Fire.Electrify.Weakness") + 1;
 		this.spread = spread;
 		
-		effects.add(new PotionEffect(PotionEffectType.SLOW, 10, slowness, true, false));
+		effects.add(new PotionEffect(PotionEffectType.SLOWNESS, 10, slowness, true, false));
 		effects.add(new PotionEffect(PotionEffectType.WEAKNESS, 10, weakness, true, false));
-		effects.add(new PotionEffect(PotionEffectType.JUMP, 10, 128, true, false));
+		effects.add(new PotionEffect(PotionEffectType.JUMP_BOOST, 10, 128, true, false));
 		
 		sound = new SoundEffect(Sound.ENTITY_CREEPER_PRIMED, 0.3f, 0.6f, 100);
 		

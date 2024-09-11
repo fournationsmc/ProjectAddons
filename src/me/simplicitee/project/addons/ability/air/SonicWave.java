@@ -1,14 +1,13 @@
 package me.simplicitee.project.addons.ability.air;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import org.bukkit.Instrument;
-import org.bukkit.Location;
-import org.bukkit.Note;
+import com.projectkorra.projectkorra.BendingPlayer;
+import com.projectkorra.projectkorra.GeneralMethods;
+import com.projectkorra.projectkorra.ability.AddonAbility;
+import com.projectkorra.projectkorra.attribute.Attribute;
+import me.simplicitee.project.addons.ProjectAddons;
+import me.simplicitee.project.addons.util.SoundAbility;
+import org.bukkit.*;
 import org.bukkit.Note.Tone;
-import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -16,13 +15,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.projectkorra.projectkorra.BendingPlayer;
-import com.projectkorra.projectkorra.GeneralMethods;
-import com.projectkorra.projectkorra.ability.AddonAbility;
-import com.projectkorra.projectkorra.attribute.Attribute;
-
-import me.simplicitee.project.addons.ProjectAddons;
-import me.simplicitee.project.addons.util.SoundAbility;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class SonicWave extends SoundAbility implements AddonAbility {
 
@@ -78,14 +73,15 @@ public class SonicWave extends SoundAbility implements AddonAbility {
 				for (Player p : player.getWorld().getPlayers()) {
 					BendingPlayer bp = BendingPlayer.getBendingPlayer(p);
 					if (bp != null && bp.hasElement(ProjectAddons.instance.getSoundElement())) {
-						p.spawnParticle(Particle.SPELL_MOB_AMBIENT, loc, 1, 0, 0, 0);	
+						//p.spawnParticle(Particle.SPELL_MOB_AMBIENT, loc, 1, 0, 0, 0);
+						p.spawnParticle(Particle.ENTITY_EFFECT, loc, 1, 0D, 0D, 0D, 0D, Color.fromARGB(50, 0, 0, 0));
 					}
 					p.playNote(loc, Instrument.FLUTE, Note.sharp(2, Tone.F));
 				}
 				
 				for (Entity e : GeneralMethods.getEntitiesAroundPoint(loc, 0.8)) {
 					if (e instanceof LivingEntity && e.getEntityId() != player.getEntityId()) {
-						((LivingEntity) e).addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, duration, amp));
+						((LivingEntity) e).addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, duration, amp));
 					}
 				}
 			}
@@ -102,6 +98,26 @@ public class SonicWave extends SoundAbility implements AddonAbility {
 				return;
 			}
 		}
+	}
+
+	public static int[] hexToRgb(String hex) {
+		hex = hex.replace("#", "");
+		int r = Integer.parseInt(hex.substring(0, 2), 16);
+		int g = Integer.parseInt(hex.substring(2, 4), 16);
+		int b = Integer.parseInt(hex.substring(4, 6), 16);
+		return new int[]{r, g, b};
+	}
+
+	// no alpha
+	public static void displayColoredParticles(String hex, Location location, int amount, double offsetX, double offsetY, double offsetZ, double extra) {
+		displayColoredParticles(hex, location, amount, offsetX, offsetY, offsetZ, extra, 255);
+	}
+
+	// use a low alpha (range: 0-255) for ambient particles
+	public static void displayColoredParticles(String hex, Location location, int amount, double offsetX, double offsetY, double offsetZ, double extra, int alpha) {
+		if (location.getWorld() == null) return;
+		int[] color = hexToRgb(hex);
+		location.getWorld().spawnParticle(Particle.ENTITY_EFFECT, location, amount, extra, offsetX, offsetY, offsetZ, Color.fromARGB(alpha, color[0], color[1], color[2]));
 	}
 	
 	private void launch() {

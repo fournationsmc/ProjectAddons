@@ -1,14 +1,12 @@
 package me.simplicitee.project.addons.ability.air;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
 import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.ability.FlightAbility;
 import com.projectkorra.projectkorra.ability.PassiveAbility;
-
 import me.simplicitee.project.addons.ProjectAddons;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class FlightPassive extends FlightAbility implements AddonAbility, PassiveAbility {
 
@@ -45,9 +43,9 @@ public class FlightPassive extends FlightAbility implements AddonAbility, Passiv
 			player.setGliding(true);
 			
 			if (player.isSneaking() && player.getFlySpeed() < maxSpeed) {
-				speed = speed + (float) acceleration;
+				speed = speed + acceleration;
 				if (speed > maxSpeed) {
-					speed = (float) maxSpeed;
+					speed = maxSpeed;
 				}	
 			}
 			

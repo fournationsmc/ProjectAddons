@@ -1,11 +1,12 @@
 package me.simplicitee.project.addons.ability.avatar;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
+import com.projectkorra.projectkorra.GeneralMethods;
+import com.projectkorra.projectkorra.ability.AddonAbility;
+import com.projectkorra.projectkorra.ability.AvatarAbility;
+import com.projectkorra.projectkorra.attribute.Attribute;
+import com.projectkorra.projectkorra.util.DamageHandler;
+import com.projectkorra.projectkorra.util.ParticleEffect;
+import me.simplicitee.project.addons.ProjectAddons;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -15,14 +16,11 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.projectkorra.projectkorra.GeneralMethods;
-import com.projectkorra.projectkorra.ability.AddonAbility;
-import com.projectkorra.projectkorra.ability.AvatarAbility;
-import com.projectkorra.projectkorra.attribute.Attribute;
-import com.projectkorra.projectkorra.util.DamageHandler;
-import com.projectkorra.projectkorra.util.ParticleEffect;
-
-import me.simplicitee.project.addons.ProjectAddons;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class EnergyBeam extends AvatarAbility implements AddonAbility{
 	
@@ -236,8 +234,8 @@ public class EnergyBeam extends AvatarAbility implements AddonAbility{
 						DamageHandler.damageEntity(e, player, damage, this);
 						damaged = true;
 					} else if (color == EnergyColor.GREEN) { //Healing
-						if (!le.hasPotionEffect(PotionEffectType.HEAL)) {
-							le.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 5, 1));
+						if (!le.hasPotionEffect(PotionEffectType.INSTANT_HEALTH)) {
+							le.addPotionEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, 5, 1));
 						}
 					} else if (color == EnergyColor.ORANGE) { //Burning
 						DamageHandler.damageEntity(e, player, damage, this);
@@ -245,8 +243,8 @@ public class EnergyBeam extends AvatarAbility implements AddonAbility{
 						damaged = true;
 					} else if (color == EnergyColor.BLACK) { //Vampirism
 						DamageHandler.damageEntity(e, player, damage, this);
-						if (!player.hasPotionEffect(PotionEffectType.HEAL)) {
-							player.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 40, Math.round((float)damage)-1));
+						if (!player.hasPotionEffect(PotionEffectType.INSTANT_HEALTH)) {
+							player.addPotionEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, 40, Math.round((float)damage)-1));
 						}
 						damaged = true;
 					} else if (color == EnergyColor.RED) { //Stronger
@@ -254,12 +252,12 @@ public class EnergyBeam extends AvatarAbility implements AddonAbility{
 						le.setNoDamageTicks(0);
 						damaged = true;
 					} else if (color == EnergyColor.PURPLE) { //Witchcraft
-						if (!le.hasPotionEffect(PotionEffectType.SLOW)) {
-							le.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30, 1));
+						if (!le.hasPotionEffect(PotionEffectType.SLOWNESS)) {
+							le.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 30, 1));
 						}
 						
-						if (!le.hasPotionEffect(PotionEffectType.CONFUSION)) {
-							le.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 30, 1));
+						if (!le.hasPotionEffect(PotionEffectType.NAUSEA)) {
+							le.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 30, 1));
 						}
 						
 						if (!le.hasPotionEffect(PotionEffectType.GLOWING)) {
@@ -291,11 +289,11 @@ public class EnergyBeam extends AvatarAbility implements AddonAbility{
 						le.setFireTicks(90);
 						le.setNoDamageTicks(0);
 						e.setVelocity(map.get(loc).clone().multiply(3));
-						if (!le.hasPotionEffect(PotionEffectType.SLOW)) {
-							le.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30, 1));
+						if (!le.hasPotionEffect(PotionEffectType.SLOWNESS)) {
+							le.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 30, 1));
 						}
-						if (!le.hasPotionEffect(PotionEffectType.CONFUSION)) {
-							le.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 30, 1));
+						if (!le.hasPotionEffect(PotionEffectType.NAUSEA)) {
+							le.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 30, 1));
 						}
 						if (!le.hasPotionEffect(PotionEffectType.GLOWING)) {
 							le.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 80, 1));
@@ -303,8 +301,8 @@ public class EnergyBeam extends AvatarAbility implements AddonAbility{
 						if (!le.hasPotionEffect(PotionEffectType.LEVITATION)) {
 							le.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 80, 9));
 						}
-						if (!player.hasPotionEffect(PotionEffectType.HEAL)) {
-							player.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 40, Math.round((float)damage)-1));
+						if (!player.hasPotionEffect(PotionEffectType.INSTANT_HEALTH)) {
+							player.addPotionEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, 40, Math.round((float)damage)-1));
 						}
 						damaged = true;
 					}

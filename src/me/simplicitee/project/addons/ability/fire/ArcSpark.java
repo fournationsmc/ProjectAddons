@@ -1,7 +1,13 @@
 package me.simplicitee.project.addons.ability.fire;
 
-import java.util.List;
-
+import com.projectkorra.projectkorra.GeneralMethods;
+import com.projectkorra.projectkorra.ability.AddonAbility;
+import com.projectkorra.projectkorra.ability.LightningAbility;
+import com.projectkorra.projectkorra.attribute.Attribute;
+import com.projectkorra.projectkorra.util.DamageHandler;
+import me.simplicitee.project.addons.ProjectAddons;
+import me.simplicitee.project.addons.Util;
+import me.simplicitee.project.addons.util.SoundEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -11,15 +17,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import com.projectkorra.projectkorra.GeneralMethods;
-import com.projectkorra.projectkorra.ability.AddonAbility;
-import com.projectkorra.projectkorra.ability.LightningAbility;
-import com.projectkorra.projectkorra.attribute.Attribute;
-import com.projectkorra.projectkorra.util.DamageHandler;
-
-import me.simplicitee.project.addons.ProjectAddons;
-import me.simplicitee.project.addons.Util;
-import me.simplicitee.project.addons.util.SoundEffect;
+import java.util.List;
 
 public class ArcSpark extends LightningAbility implements AddonAbility {
 	
@@ -76,11 +74,11 @@ public class ArcSpark extends LightningAbility implements AddonAbility {
 			
 			chargedTill = System.currentTimeMillis();
 			charging.play(player.getEyeLocation());
-		} else if (charged && !shoot) {
+		} else if (!shoot) {
 			Util.playLightningParticles(player.getEyeLocation().add(player.getLocation().getDirection().multiply(1.3)), 1, 0.001, 0.001, 0.001);
 			chargedTill = System.currentTimeMillis();
 			charging.play(player.getEyeLocation());
-		} else if (charged && shoot) {
+		} else {
 			if (chargedTill + duration < System.currentTimeMillis()) {
 				remove();
 				return;

@@ -1,15 +1,13 @@
 package me.simplicitee.project.addons.ability.fire;
 
+import com.projectkorra.projectkorra.ability.AddonAbility;
+import com.projectkorra.projectkorra.ability.FireAbility;
+import com.projectkorra.projectkorra.attribute.Attribute;
+import me.simplicitee.project.addons.ProjectAddons;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-
-import com.projectkorra.projectkorra.ability.AddonAbility;
-import com.projectkorra.projectkorra.ability.FireAbility;
-import com.projectkorra.projectkorra.attribute.Attribute;
-
-import me.simplicitee.project.addons.ProjectAddons;
 
 public class Jets extends FireAbility implements AddonAbility {
 	
@@ -131,7 +129,7 @@ public class Jets extends FireAbility implements AddonAbility {
 
 		for (int i = 0; i < 4; i++) {
 			Location p = player.getLocation().clone().add(pDirection.clone().multiply(i));
-			playFirebendingParticles(p, 4 - i, 0.3 - (i / 10), 0.04, 0.3 - (i / 10));
+			playFirebendingParticles(p, 4 - i, 0.3 - ((double) i / 10), 0.04, 0.3 - ((double) i / 10));
 		}
 		
 		playFirebendingSound(player.getLocation());
