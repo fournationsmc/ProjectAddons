@@ -74,7 +74,7 @@ public class SonicWave extends SoundAbility implements AddonAbility {
 					BendingPlayer bp = BendingPlayer.getBendingPlayer(p);
 					if (bp != null && bp.hasElement(ProjectAddons.instance.getSoundElement())) {
 						//p.spawnParticle(Particle.SPELL_MOB_AMBIENT, loc, 1, 0, 0, 0);
-						p.spawnParticle(Particle.ENTITY_EFFECT, loc, 1, 0D, 0D, 0D, 0D, Color.fromARGB(50, 0, 0, 0));
+						p.spawnParticle(Particle.ENTITY_EFFECT, loc, 1, 0D, 0D, 0D, 0D, Color.fromARGB(150, 0, 0, 0));
 					}
 					p.playNote(loc, Instrument.FLUTE, Note.sharp(2, Tone.F));
 				}
