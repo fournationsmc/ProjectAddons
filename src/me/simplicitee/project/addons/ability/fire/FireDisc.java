@@ -50,8 +50,8 @@ public class FireDisc extends FireAbility implements AddonAbility {
 		this.knockback = ProjectAddons.instance.getConfig().getDouble("Abilities.Fire.FireDisc.Knockback");
 		
 		if (bPlayer.isAvatarState()) {
-			this.control = true;
-			this.cooldown = 0;
+			if (ProjectAddons.instance.getConfig().getBoolean("Abilities.Fire.FireDisc.AvatarState.Control")) this.control = true;
+			if (ProjectAddons.instance.getConfig().getBoolean("Abilities.Fire.FireDisc.AvatarState.NoCooldown")) this.cooldown = 0;
 		}
 		
 		bPlayer.addCooldown(this);

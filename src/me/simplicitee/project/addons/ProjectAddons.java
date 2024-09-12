@@ -300,6 +300,8 @@ public class ProjectAddons extends JavaPlugin {
 		// FireDisc
 		config.addDefault("Abilities.Fire.FireDisc.Enabled", true);
 		config.addDefault("Abilities.Fire.FireDisc.Cooldown", 1700);
+		config.addDefault("Abilities.Fire.FireDisc.AvatarState.Control", true);
+		config.addDefault("Abilities.Fire.FireDisc.AvatarState.NoCooldown", true);
 		config.addDefault("Abilities.Fire.FireDisc.Damage", 1.5);
 		config.addDefault("Abilities.Fire.FireDisc.Range", 32);
 		config.addDefault("Abilities.Fire.FireDisc.Knockback", 0.84);
