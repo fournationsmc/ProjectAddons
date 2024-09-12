@@ -16,12 +16,12 @@ public class FlightPassive extends FlightAbility implements AddonAbility, Passiv
 	private boolean toggled = false;
 	private boolean active = false;
 	private float original = 0.8f;
-    private float speed;
 
-    private final float flySpeed;
-    private final float startSpeed;
-    private final float maxSpeed;
-    private final float acceleration;
+	private float speed;
+	private final float flySpeed;
+	private final float startSpeed;
+	private final float maxSpeed;
+	private final float acceleration;
 	
 	public FlightPassive(Player player) {
 		super(player);
