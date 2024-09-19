@@ -18,7 +18,10 @@ public final class Util {
 	}
 
 	public static void emitFireLight(Location loc) {
-		LightManager.createLight(loc).brightness(13).timeUntilFadeout(600).emit();
+		boolean enabled = ProjectAddons.instance.getConfig().getBoolean("Properties.Fire.DynamicLight.Enabled");
+		int brightness = ProjectAddons.instance.getConfig().getInt("Properties.Fire.DynamicLight.Brightness");
+		long keepAlive = ProjectAddons.instance.getConfig().getLong("Properties.Fire.DynamicLight.KeepAlive");
+		if (enabled) LightManager.createLight(loc).brightness(brightness).timeUntilFadeout(keepAlive).emit();
 	}
 	
 	public static double clamp(double min, double max, double value) {

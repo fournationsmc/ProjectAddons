@@ -122,6 +122,10 @@ public class ProjectAddons extends JavaPlugin {
 
 		config.addDefault("Properties.MetallicBlocks", Arrays.asList("GOLD_BLOCK", "IRON_BLOCK", "NETHERITE_BLOCK"));
 
+		config.addDefault("Properties.Fire.DynamicLight.Enabled", true);
+		config.addDefault("Properties.Fire.DynamicLight.Brightness", 13);
+		config.addDefault("Properties.Fire.DynamicLight.KeepAlive", 600);
+
 		// ---- Avatar ----
 		// EnergyBeam
 		config.addDefault("Abilities.Avatar.EnergyBeam.Enabled", true);
