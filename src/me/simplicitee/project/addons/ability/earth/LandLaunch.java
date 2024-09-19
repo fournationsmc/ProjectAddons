@@ -11,7 +11,6 @@ import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 public class LandLaunch extends EarthAbility implements AddonAbility, PassiveAbility {
 

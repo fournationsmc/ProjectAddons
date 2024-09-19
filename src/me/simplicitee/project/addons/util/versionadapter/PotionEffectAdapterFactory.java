@@ -1,7 +1,6 @@
 package me.simplicitee.project.addons.util.versionadapter;
 
 import com.projectkorra.projectkorra.GeneralMethods;
-import org.bukkit.Bukkit;
 
 public class PotionEffectAdapterFactory {
 

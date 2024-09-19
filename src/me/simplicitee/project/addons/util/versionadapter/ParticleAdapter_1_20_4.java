@@ -1,7 +1,8 @@
 package me.simplicitee.project.addons.util.versionadapter;
 
 import me.simplicitee.project.addons.util.HexColor;
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.Particle;
 
 public class ParticleAdapter_1_20_4 implements ParticleAdapter {
 

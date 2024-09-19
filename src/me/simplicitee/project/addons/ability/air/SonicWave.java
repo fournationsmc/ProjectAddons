@@ -7,13 +7,13 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import me.simplicitee.project.addons.ProjectAddons;
 import me.simplicitee.project.addons.util.HexColor;
 import me.simplicitee.project.addons.util.SoundAbility;
-import org.bukkit.*;
+import org.bukkit.Instrument;
+import org.bukkit.Location;
+import org.bukkit.Note;
 import org.bukkit.Note.Tone;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;

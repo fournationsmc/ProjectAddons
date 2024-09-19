@@ -10,12 +10,21 @@ import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
 import com.projectkorra.projectkorra.ability.util.MultiAbilityManager.MultiAbilityInfoSub;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.earthbending.EarthArmor;
-import com.projectkorra.projectkorra.util.*;
+import com.projectkorra.projectkorra.util.ActionBar;
+import com.projectkorra.projectkorra.util.ClickType;
+import com.projectkorra.projectkorra.util.DamageHandler;
+import com.projectkorra.projectkorra.util.MovementHandler;
+import com.projectkorra.projectkorra.util.TempArmor;
+import com.projectkorra.projectkorra.util.TempBlock;
 import me.simplicitee.project.addons.ProjectAddons;
 import me.simplicitee.project.addons.Util;
 import me.simplicitee.project.addons.util.versionadapter.PotionEffectAdapter;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -29,7 +38,12 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class PlantArmor extends PlantAbility implements AddonAbility, MultiAbility {
