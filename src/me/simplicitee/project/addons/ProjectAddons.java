@@ -13,6 +13,10 @@ import me.simplicitee.project.addons.ability.earth.Crumble;
 import me.simplicitee.project.addons.ability.fire.CombustBeam;
 import me.simplicitee.project.addons.ability.fire.FireDisc;
 import me.simplicitee.project.addons.ability.water.RazorLeaf;
+import me.simplicitee.project.addons.util.versionadapter.ParticleAdapter;
+import me.simplicitee.project.addons.util.versionadapter.ParticleAdapterFactory;
+import me.simplicitee.project.addons.util.versionadapter.PotionEffectAdapter;
+import me.simplicitee.project.addons.util.versionadapter.PotionEffectAdapterFactory;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -30,6 +34,9 @@ public class ProjectAddons extends JavaPlugin {
 	private FileConfiguration config;
 	private MainListener listener;
 	private Element soundElement;
+
+	private ParticleAdapter particleAdapter;
+	private PotionEffectAdapter potionEffectAdapter;
 
 	@Override
 	public void onEnable() {
@@ -55,6 +62,12 @@ public class ProjectAddons extends JavaPlugin {
 		CoreAbility.registerPluginAbilities(this, "me.simplicitee.project.addons.ability");
 
 		this.setupCollisions();
+
+		ParticleAdapterFactory particleAdapterFactory = new ParticleAdapterFactory();
+		particleAdapter = particleAdapterFactory.getAdapter();
+
+		PotionEffectAdapterFactory potionEffectAdapterFactory = new PotionEffectAdapterFactory();
+		potionEffectAdapter = potionEffectAdapterFactory.getAdapter();
 
 		this.listener = new MainListener(this);
 
@@ -82,6 +95,14 @@ public class ProjectAddons extends JavaPlugin {
 	
 	public Element getSoundElement() {
 		return soundElement;
+	}
+
+	public ParticleAdapter getParticleAdapter() {
+		return this.particleAdapter;
+	}
+
+	public PotionEffectAdapter getPotionEffectAdapter() {
+		return this.potionEffectAdapter;
 	}
 	
 	@NotNull
@@ -111,14 +132,6 @@ public class ProjectAddons extends JavaPlugin {
 		config.addDefault("Abilities.Avatar.EnergyBeam.EasterEgg", true);
 		
 		// ---- Airbending ----
-		// Flying
-		config.addDefault("Passives.Air.Flying.Enabled", true);
-		config.addDefault("Passives.Air.Flying.FlySpeed", 0.05);
-		config.addDefault("Passives.Air.Flying.Glide.StartSpeed", 0.8);
-		config.addDefault("Passives.Air.Flying.Glide.MaxSpeed", 1.6);
-		config.addDefault("Passives.Air.Flying.Acceleration", 0.001);
-		config.addDefault("Passives.Air.Flying.AbilityBlacklist", Arrays.asList("Tornado", "EarthSmash", "Surge", "Lightning"));
-		
 		// Deafen
 		config.addDefault("Abilities.Air.Deafen.Enabled", true);
 		config.addDefault("Abilities.Air.Deafen.Cooldown", 10000);

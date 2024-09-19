@@ -7,6 +7,7 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.util.DamageHandler;
 import com.projectkorra.projectkorra.util.TempBlock;
 import me.simplicitee.project.addons.ProjectAddons;
+import me.simplicitee.project.addons.Util;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -137,6 +138,7 @@ public class FireDisc extends FireAbility implements AddonAbility {
 			for (double theta = 0; theta < 2 * Math.PI; theta += Math.PI / (r * 12)) {
 				Vector ortho = GeneralMethods.getOrthogonalVector(normal, Math.toDegrees(theta), r);
 				playFirebendingParticles(loc.clone().add(ortho), 2, 0.03, 0, 0.03);
+				Util.emitFireLight(loc.clone().add(ortho));
 			}
 		}
 		

@@ -65,6 +65,7 @@ public class ChargeBolt extends LightningAbility implements AddonAbility {
 		
 		if (player.isSneaking() && System.currentTimeMillis() > getStartTime() + chargeTime) {
 			Util.playLightningParticles(GeneralMethods.getMainHandLocation(player), 2, 0.1, 0.1, 0.1);
+			Util.emitFireLight(GeneralMethods.getMainHandLocation(player));
 			if (Math.random() < 0.3) {
 				playLightningbendingSound(player.getEyeLocation());
 			}
@@ -218,6 +219,7 @@ public class ChargeBolt extends LightningAbility implements AddonAbility {
 			}
 			
 			Util.playLightningParticles(loc, 1, 0.1, 0.1, 0.1);
+			Util.emitFireLight(loc);
 			if (Math.random() > 0.01) {
 				playLightningbendingSound(loc);
 			}

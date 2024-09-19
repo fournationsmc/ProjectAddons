@@ -8,6 +8,7 @@ import com.projectkorra.projectkorra.ProjectKorra;
 import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.ability.util.ComboManager;
 import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
+import com.projectkorra.projectkorra.airbending.flight.FlightMultiAbility;
 import com.projectkorra.projectkorra.board.BendingBoardManager;
 import com.projectkorra.projectkorra.event.AbilityStartEvent;
 import com.projectkorra.projectkorra.event.BendingReloadEvent;
@@ -29,6 +30,7 @@ import me.simplicitee.project.addons.ability.water.MistShards;
 import me.simplicitee.project.addons.ability.water.PlantArmor;
 import me.simplicitee.project.addons.ability.water.RazorLeaf;
 import me.simplicitee.project.addons.util.BendingPredicate;
+import me.simplicitee.project.addons.util.LightManager;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -248,8 +250,6 @@ public class MainListener implements Listener {
 	public void onAbilityStart(AbilityStartEvent event) {
 		if (BloodGrip.isBloodbent(event.getAbility().getPlayer())) {
 			event.setCancelled(!ProjectAddons.instance.getConfig().getStringList("Abilities.Water.BloodGrip.BasicAbilities").contains(event.getAbility().getName()));
-		} else if (CoreAbility.hasAbility(event.getAbility().getPlayer(), FlightPassive.class) && CoreAbility.getAbility(event.getAbility().getPlayer(), FlightPassive.class).isActive()) {
-			event.setCancelled(ProjectAddons.instance.getConfig().getStringList("Passives.Air.Flying.AbilityBlacklist").contains(event.getAbility().getName()));
 		}
 	}
 	
@@ -470,6 +470,8 @@ public class MainListener implements Listener {
 	
 	@EventHandler
 	public void onReload(BendingReloadEvent event) {
+		LightManager.get().restart();
+
         try {
             ProjectAddons.instance.config().load(new File(ProjectAddons.instance.getDataFolder(), "project_addons.yml"));
         } catch (IOException | InvalidConfigurationException e) {
@@ -503,29 +505,6 @@ public class MainListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onFlightToggle(PlayerToggleFlightEvent event) {
-		Player player = event.getPlayer();
-		if (!CoreAbility.hasAbility(player, FlightPassive.class)) {
-			return;
-		}
-		
-		FlightPassive passive = CoreAbility.getAbility(player, FlightPassive.class);
-		
-		if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
-			return;
-		} else if (event.isFlying()) {
-			for (ItemStack is : player.getInventory().getContents()) {
-				if (is != null) {
-					event.setCancelled(true);
-					return;
-				}
-			}
-		}
-		
-		passive.fly(event.isFlying());
-	}
-	
-	@EventHandler
 	public void onOffhandToggle(PlayerSwapHandItemsEvent event) {
 		if (event.isCancelled() || event.getMainHandItem().getType() != Material.AIR || event.getOffHandItem().getType() != Material.AIR) {
 			return;
@@ -536,14 +515,6 @@ public class MainListener implements Listener {
 		
 		if (bPlayer == null) { 
 			return;
-		}
-		
-		if (CoreAbility.hasAbility(player, FlightPassive.class)) {
-			FlightPassive passive = CoreAbility.getAbility(player, FlightPassive.class);
-			if (passive.isActive()) {
-				passive.toggleGlide();
-				return;
-			}
 		}
 		
 		if (player.hasPermission("bending.offhandswap")) {

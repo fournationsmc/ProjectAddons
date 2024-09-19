@@ -9,6 +9,7 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.util.ClickType;
 import com.projectkorra.projectkorra.util.DamageHandler;
 import me.simplicitee.project.addons.ProjectAddons;
+import me.simplicitee.project.addons.Util;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -159,6 +160,8 @@ public class FlameBreath extends FireAbility implements AddonAbility, ComboAbili
 			} else {
 				playFirebendingParticles(breath, amount, offset, offset, offset);
 			}
+
+			Util.emitFireLight(breath);
 			
 			if (Math.random() > 0.9) {
 				playFirebendingSound(breath);

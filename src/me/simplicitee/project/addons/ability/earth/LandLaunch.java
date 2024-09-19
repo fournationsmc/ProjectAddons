@@ -6,6 +6,7 @@ import com.projectkorra.projectkorra.ability.EarthAbility;
 import com.projectkorra.projectkorra.ability.PassiveAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import me.simplicitee.project.addons.ProjectAddons;
+import me.simplicitee.project.addons.util.versionadapter.PotionEffectAdapter;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -25,8 +26,9 @@ public class LandLaunch extends EarthAbility implements AddonAbility, PassiveAbi
 
 	@Override
 	public void progress() {
+		PotionEffectAdapter effectAdapter = ProjectAddons.instance.getPotionEffectAdapter();
 		if (bPlayer.isElementToggled(Element.EARTH) && player.isOnGround() && isEarthbendable(player.getLocation().getBlock().getRelative(BlockFace.DOWN))) {
-			player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 10, amp));
+			player.addPotionEffect(new PotionEffect(effectAdapter.getJumpBoostPotionEffectType(), 10, amp));
 		}
 	}
 

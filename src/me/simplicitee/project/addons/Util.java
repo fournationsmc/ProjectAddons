@@ -1,6 +1,7 @@
 package me.simplicitee.project.addons;
 
 import com.projectkorra.projectkorra.GeneralMethods;
+import me.simplicitee.project.addons.util.LightManager;
 import org.bukkit.Location;
 
 public final class Util {
@@ -14,6 +15,10 @@ public final class Util {
 	public static void playLightningParticles(Location loc, int amount, double xOff, double yOff, double zOff) {
 		int i = (int) Math.round(Math.random() * (lightning.length - 1));
 		GeneralMethods.displayColoredParticle(lightning[i], loc, amount, xOff, yOff, zOff);
+	}
+
+	public static void emitFireLight(Location loc) {
+		LightManager.createLight(loc).brightness(13).timeUntilFadeout(600).emit();
 	}
 	
 	public static double clamp(double min, double max, double value) {

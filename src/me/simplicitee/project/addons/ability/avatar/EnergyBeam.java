@@ -7,6 +7,8 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.util.DamageHandler;
 import com.projectkorra.projectkorra.util.ParticleEffect;
 import me.simplicitee.project.addons.ProjectAddons;
+import me.simplicitee.project.addons.Util;
+import me.simplicitee.project.addons.util.versionadapter.PotionEffectAdapter;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -219,9 +221,10 @@ public class EnergyBeam extends AvatarAbility implements AddonAbility{
 			int r = new Random().nextInt(EnergyColor.values().length - 1);
 			use = EnergyColor.values()[r];
 		}
-		
 
 		GeneralMethods.displayColoredParticle(use.getHex(), loc, 4, 0.3, 0.3, 0.3);
+
+		Util.emitFireLight(loc);
 	}
 	
 	public boolean damageEntities(Location loc) {
@@ -230,12 +233,13 @@ public class EnergyBeam extends AvatarAbility implements AddonAbility{
 			if (e instanceof LivingEntity && e.getEntityId() != player.getEntityId()) {
 				LivingEntity le = (LivingEntity) e;
 				if (effects) {
+					PotionEffectAdapter effectAdapter = ProjectAddons.instance.getPotionEffectAdapter();
 					if (color == EnergyColor.BLUE) { //Normal
 						DamageHandler.damageEntity(e, player, damage, this);
 						damaged = true;
 					} else if (color == EnergyColor.GREEN) { //Healing
-						if (!le.hasPotionEffect(PotionEffectType.INSTANT_HEALTH)) {
-							le.addPotionEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, 5, 1));
+						if (!le.hasPotionEffect(effectAdapter.getInstantHealingPotionType())) {
+							le.addPotionEffect(new PotionEffect(effectAdapter.getInstantHealingPotionType(), 5, 1));
 						}
 					} else if (color == EnergyColor.ORANGE) { //Burning
 						DamageHandler.damageEntity(e, player, damage, this);
@@ -243,8 +247,8 @@ public class EnergyBeam extends AvatarAbility implements AddonAbility{
 						damaged = true;
 					} else if (color == EnergyColor.BLACK) { //Vampirism
 						DamageHandler.damageEntity(e, player, damage, this);
-						if (!player.hasPotionEffect(PotionEffectType.INSTANT_HEALTH)) {
-							player.addPotionEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, 40, Math.round((float)damage)-1));
+						if (!player.hasPotionEffect(effectAdapter.getInstantHealingPotionType())) {
+							player.addPotionEffect(new PotionEffect(effectAdapter.getInstantHealingPotionType(), 40, Math.round((float)damage)-1));
 						}
 						damaged = true;
 					} else if (color == EnergyColor.RED) { //Stronger
@@ -252,12 +256,12 @@ public class EnergyBeam extends AvatarAbility implements AddonAbility{
 						le.setNoDamageTicks(0);
 						damaged = true;
 					} else if (color == EnergyColor.PURPLE) { //Witchcraft
-						if (!le.hasPotionEffect(PotionEffectType.SLOWNESS)) {
-							le.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 30, 1));
+						if (!le.hasPotionEffect(effectAdapter.getSlownessPotionEffectType())) {
+							le.addPotionEffect(new PotionEffect(effectAdapter.getSlownessPotionEffectType(), 30, 1));
 						}
 						
-						if (!le.hasPotionEffect(PotionEffectType.NAUSEA)) {
-							le.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 30, 1));
+						if (!le.hasPotionEffect(effectAdapter.getNauseaPotionEffectType())) {
+							le.addPotionEffect(new PotionEffect(effectAdapter.getNauseaPotionEffectType(), 30, 1));
 						}
 						
 						if (!le.hasPotionEffect(PotionEffectType.GLOWING)) {
@@ -289,11 +293,11 @@ public class EnergyBeam extends AvatarAbility implements AddonAbility{
 						le.setFireTicks(90);
 						le.setNoDamageTicks(0);
 						e.setVelocity(map.get(loc).clone().multiply(3));
-						if (!le.hasPotionEffect(PotionEffectType.SLOWNESS)) {
-							le.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 30, 1));
+						if (!le.hasPotionEffect(effectAdapter.getSlownessPotionEffectType())) {
+							le.addPotionEffect(new PotionEffect(effectAdapter.getSlownessPotionEffectType(), 30, 1));
 						}
-						if (!le.hasPotionEffect(PotionEffectType.NAUSEA)) {
-							le.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 30, 1));
+						if (!le.hasPotionEffect(effectAdapter.getNauseaPotionEffectType())) {
+							le.addPotionEffect(new PotionEffect(effectAdapter.getNauseaPotionEffectType(), 30, 1));
 						}
 						if (!le.hasPotionEffect(PotionEffectType.GLOWING)) {
 							le.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 80, 1));
@@ -301,8 +305,8 @@ public class EnergyBeam extends AvatarAbility implements AddonAbility{
 						if (!le.hasPotionEffect(PotionEffectType.LEVITATION)) {
 							le.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 80, 9));
 						}
-						if (!player.hasPotionEffect(PotionEffectType.INSTANT_HEALTH)) {
-							player.addPotionEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, 40, Math.round((float)damage)-1));
+						if (!player.hasPotionEffect(effectAdapter.getInstantHealingPotionType())) {
+							player.addPotionEffect(new PotionEffect(effectAdapter.getInstantHealingPotionType(), 40, Math.round((float)damage)-1));
 						}
 						damaged = true;
 					}

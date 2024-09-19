@@ -8,6 +8,7 @@ import com.projectkorra.projectkorra.util.DamageHandler;
 import com.projectkorra.projectkorra.util.ParticleEffect;
 import com.projectkorra.projectkorra.util.TempBlock;
 import me.simplicitee.project.addons.ProjectAddons;
+import me.simplicitee.project.addons.util.versionadapter.PotionEffectAdapter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -164,16 +165,17 @@ public class Accretion extends EarthAbility implements AddonAbility {
 	public void entityCollision(FallingBlock fb, LivingEntity entity) {
 		int duration = 20;
 		int amp = 1;
-		if (entity.hasPotionEffect(PotionEffectType.SLOWNESS)) {
-			PotionEffect effect = entity.getPotionEffect(PotionEffectType.SLOWNESS);
+		PotionEffectAdapter effectAdapter = ProjectAddons.instance.getPotionEffectAdapter();
+		if (entity.hasPotionEffect(effectAdapter.getSlownessPotionEffectType())) {
+			PotionEffect effect = entity.getPotionEffect(effectAdapter.getSlownessPotionEffectType());
 			
 			duration += effect.getDuration();
 			amp += effect.getAmplifier();
 			
-			entity.removePotionEffect(PotionEffectType.SLOWNESS);
+			entity.removePotionEffect(effectAdapter.getSlownessPotionEffectType());
 		}
 		
-		entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, duration, amp, true, false));
+		entity.addPotionEffect(new PotionEffect(effectAdapter.getSlownessPotionEffectType(), duration, amp, true, false));
 		DamageHandler.damageEntity(entity, damage, this);
 		fb.remove();
 	}

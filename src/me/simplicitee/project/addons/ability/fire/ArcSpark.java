@@ -70,12 +70,14 @@ public class ArcSpark extends LightningAbility implements AddonAbility {
 				charged = true;
 			} else {
 				Util.playLightningParticles(player.getLocation().add(0, 1, 0), 2, 0.36, 0.21, 0.36);
+				Util.emitFireLight(player.getLocation());
 			}
 			
 			chargedTill = System.currentTimeMillis();
 			charging.play(player.getEyeLocation());
 		} else if (!shoot) {
 			Util.playLightningParticles(player.getEyeLocation().add(player.getLocation().getDirection().multiply(1.3)), 1, 0.001, 0.001, 0.001);
+			Util.emitFireLight(player.getEyeLocation().add(player.getLocation().getDirection().multiply(1.3)));
 			chargedTill = System.currentTimeMillis();
 			charging.play(player.getEyeLocation());
 		} else {
@@ -160,6 +162,7 @@ public class ArcSpark extends LightningAbility implements AddonAbility {
 		}
 		
 		Util.playLightningParticles(loc, 1, 0, 0, 0);
+		Util.emitFireLight(loc);
 		if (Math.random() < 0.01) {
 			playLightningbendingSound(loc);
 		}
