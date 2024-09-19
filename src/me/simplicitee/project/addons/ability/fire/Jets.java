@@ -6,6 +6,7 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import me.simplicitee.project.addons.ProjectAddons;
 import me.simplicitee.project.addons.Util;
 import org.bukkit.FluidCollisionMode;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -101,6 +102,7 @@ public class Jets extends FireAbility implements AddonAbility {
 		}
 		
 		if (!checkHeight()) {
+			player.setAllowFlight(false);
 			player.setFlying(false);
 			player.setGliding(false);
 			return;
@@ -108,11 +110,13 @@ public class Jets extends FireAbility implements AddonAbility {
 		
 		Vector pDirection = null;
 		if (hovering) {
+			player.setAllowFlight(true);
 			player.setFlying(true);
 			player.setGliding(false);
 			player.setVelocity(player.getVelocity().add(new Vector(0, -0.015, 0)));
 			pDirection = new Vector(0, -0.4, 0);
 		} else if (gliding) {
+			player.setAllowFlight(false);
 			player.setGliding(true);
 			player.setFlying(false);
 			Vector velocity = player.getEyeLocation().getDirection().clone().normalize().multiply(flySpeed);
@@ -141,6 +145,7 @@ public class Jets extends FireAbility implements AddonAbility {
 	public void remove() {
 		super.remove();
 		this.flightHandler.removeInstance(player, getName());
+		player.setAllowFlight(false);
 		player.setFallDistance(0);
 		player.setFlySpeed(oSpeed);
 		bPlayer.addCooldown(this);
