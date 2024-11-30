@@ -50,11 +50,13 @@ public class NinjaStance extends ChiAbility implements AddonAbility{
 		stealthCooldown = ProjectAddons.instance.getConfig().getLong("Abilities.Chi.NinjaStance.Stealth.Cooldown");
 
 		// Check if the player is wearing any armor
-		boolean isWearingArmor = GeneralMethods.isPlayerWearingArmor(player);
+		int armorPoints = GeneralMethods.getArmorPoints(player);
+
+		boolean shouldApplyNerf = armorPoints > 6;
 
 		// Set jump and speed values based on armor status
-		int adjustedJumpPower = isWearingArmor ? 0 : ProjectAddons.instance.getConfig().getInt("Abilities.Chi.NinjaStance.JumpAmplifier") + 1;
-		int adjustedSpeedPower = isWearingArmor ? 0 : ProjectAddons.instance.getConfig().getInt("Abilities.Chi.NinjaStance.SpeedAmplifier") + 1;
+		int adjustedJumpPower = shouldApplyNerf ? 0 : ProjectAddons.instance.getConfig().getInt("Abilities.Chi.NinjaStance.JumpAmplifier") + 1;
+		int adjustedSpeedPower = shouldApplyNerf ? 0 : ProjectAddons.instance.getConfig().getInt("Abilities.Chi.NinjaStance.SpeedAmplifier") + 1;
 
 		effects.add(new PotionEffect(PotionEffectType.SPEED, 5, adjustedSpeedPower, true, false));
 		effects.add(new PotionEffect(effectAdapter.getJumpBoostPotionEffectType(), 5, adjustedJumpPower, true, false));
