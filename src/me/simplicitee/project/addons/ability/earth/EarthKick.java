@@ -19,12 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class EarthKick extends EarthAbility implements AddonAbility, Listener{
 
@@ -39,6 +34,8 @@ public class EarthKick extends EarthAbility implements AddonAbility, Listener{
 	
 	public List<FallingBlock> kick;
 	public long duration = 2500;
+
+	private final Set<Entity> alreadyHit = new HashSet<>();
 	
 	public EarthKick(Player player) {
 		super(player);
@@ -127,7 +124,10 @@ public class EarthKick extends EarthAbility implements AddonAbility, Listener{
 			
 			for (Entity e : GeneralMethods.getEntitiesAroundPoint(fb.getLocation(), 1.5)) {
 				if (e instanceof LivingEntity && e.getEntityId() != player.getEntityId()) {
+					if (alreadyHit.contains(e)) continue;
+
 					DamageHandler.damageEntity(e, player, damage, this);
+					alreadyHit.add(e);
 					((LivingEntity) e).setNoDamageTicks(0);
 					iter.remove();
 					fb.remove();
