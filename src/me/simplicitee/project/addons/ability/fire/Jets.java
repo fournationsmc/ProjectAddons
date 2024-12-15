@@ -5,9 +5,13 @@ import com.projectkorra.projectkorra.ability.FireAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import me.simplicitee.project.addons.ProjectAddons;
 import me.simplicitee.project.addons.Util;
+import org.bukkit.Bukkit;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -28,7 +32,12 @@ public class Jets extends FireAbility implements AddonAbility {
 	private float oSpeed;
 	private boolean hovering, gliding;
 	private TurboJet source;
-	
+
+	// Add BossBar for duration
+	private BossBar bossBar;
+
+
+
 	public Jets(Player player) {
 		this(player, null);
 	}
@@ -70,7 +79,11 @@ public class Jets extends FireAbility implements AddonAbility {
 		this.flightHandler.createInstance(player, getName());
 		player.setAllowFlight(true);
 		player.setFlySpeed((float) hoverSpeed);
-		
+
+		// Initialize BossBar
+		this.bossBar = Bukkit.createBossBar("Jets Duration", BarColor.RED, BarStyle.SOLID);
+		this.bossBar.addPlayer(player);
+
 		start();
 	}
 
@@ -90,7 +103,12 @@ public class Jets extends FireAbility implements AddonAbility {
 			remove();
 			return;
 		}
-		
+
+		// Update BossBar progress
+		long elapsedTime = System.currentTimeMillis() - getStartTime();
+		double progress = Math.max(0, 1.0 - (double) elapsedTime / duration); // Ensure progress doesn't go below 0
+		bossBar.setProgress(progress);
+
 		if (duration > 0 && getStartTime() + duration < System.currentTimeMillis()) {
 			remove();
 			return;
@@ -149,8 +167,12 @@ public class Jets extends FireAbility implements AddonAbility {
 		player.setFallDistance(0);
 		player.setFlySpeed(oSpeed);
 		bPlayer.addCooldown(this);
+		// Remove BossBar
+		if (this.bossBar != null) {
+			this.bossBar.removeAll();
+		}
 	}
-	
+
 	public void clickFunction() {
 		if (player.isSneaking()) {
 			remove();
