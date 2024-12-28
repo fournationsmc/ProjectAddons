@@ -4,11 +4,16 @@ import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.ability.MetalAbility;
 import me.simplicitee.project.addons.ProjectAddons;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 public class ShrapnelBlast extends MetalAbility implements AddonAbility {
+
+	private final Set<Entity> hitEntities = new HashSet<>(); // Track hit entities
 
 	public ShrapnelBlast(Player player) {
 		super(player);
@@ -31,7 +36,7 @@ public class ShrapnelBlast extends MetalAbility implements AddonAbility {
 			int pitch = new Random().nextInt(spread/2) - spread/4;
 			loc.setPitch(loc.getPitch() + pitch);
 			
-			new ShrapnelShot(player, loc.getDirection(), speed);
+			new ShrapnelShot(player, loc.getDirection(), speed, hitEntities);
 		}
 		
 		bPlayer.addCooldown("Shrapnel", cooldown);

@@ -20,6 +20,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
+import java.util.Set;
+
 public class ShrapnelShot extends MetalAbility implements AddonAbility {
 	
 	@Attribute(Attribute.DAMAGE)
@@ -29,6 +31,9 @@ public class ShrapnelShot extends MetalAbility implements AddonAbility {
 	
 	private Item nugget;
 	private double speed;
+
+	// Reference to the hit entities from ShrapnelBlast
+	private Set<Entity> hitEntities;
 
 	public ShrapnelShot(Player player) {
 		super(player);
@@ -68,7 +73,7 @@ public class ShrapnelShot extends MetalAbility implements AddonAbility {
 		start();
 	}
 	
-	public ShrapnelShot(Player player, Vector direction, double speed) {
+	public ShrapnelShot(Player player, Vector direction, double speed, Set<Entity> hitEntities) {
 		super(player);
 		
 		if (!bPlayer.canBendIgnoreCooldowns(this)) {
@@ -83,7 +88,9 @@ public class ShrapnelShot extends MetalAbility implements AddonAbility {
 		} else {
 			return;
 		}
-		
+
+		this.hitEntities = hitEntities;
+
 		int slot = player.getInventory().first(m);
 		ItemStack is = player.getInventory().getItem(slot);
 		is.setAmount(is.getAmount() - 1);
@@ -149,9 +156,19 @@ public class ShrapnelShot extends MetalAbility implements AddonAbility {
 		ParticleEffect.CRIT.display(nugget.getLocation(), 1);
 		player.getWorld().playSound(nugget.getLocation(), Sound.ENTITY_ARROW_HIT, 0.2f, 1f);
 		double dmg = Util.clamp(0, damage, damage * (nugget.getVelocity().length() / speed));
-		
+
 		for (Entity e : GeneralMethods.getEntitiesAroundPoint(nugget.getLocation(), 1.5)) {
 			if (e instanceof LivingEntity && e.getEntityId() != player.getEntityId()) {
+				// Check if the entity was already hit
+				if (hitEntities != null) {
+					if (hitEntities.contains(e)) {
+						continue;
+					}
+
+					// Mark entity as hit
+					hitEntities.add(e);
+				}
+
 				player.getWorld().playSound(e.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.4f, 1f);
 				DamageHandler.damageEntity(e, dmg, this);
 				((LivingEntity) e).setNoDamageTicks(0);
