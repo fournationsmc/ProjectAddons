@@ -25,7 +25,7 @@
             <artifactId>projectkorra</artifactId>
             <version>v1.12.1</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/ProjectKorra-1.12.0-BETA-12.jar</systemPath>
+            <systemPath>${project.basedir}/lib/ProjectKorra-1.12.1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
