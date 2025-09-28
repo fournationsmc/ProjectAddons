@@ -580,7 +580,16 @@ public class MainListener implements Listener {
 
 	private boolean canBend(Player player, String ability, boolean canbend) {
 		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
+		
+		if (bPlayer == null) {
+			return false;
+		}
+		
 		CoreAbility abil = CoreAbility.getAbility(ability);
+		
+		if (abil == null) {
+			return false;
+		}
 		
 		if (canbend && !bPlayer.canBend(abil)) {
 			return false;
