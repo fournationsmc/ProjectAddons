@@ -413,7 +413,19 @@ public class MainListener implements Listener {
 			}
 		}
 	}
-	
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void onEntityDamage(EntityDamageEvent event) {
+		if (!(event.getEntity() instanceof LivingEntity)) return;
+
+		LivingEntity le = (LivingEntity) event.getEntity();
+
+		if (PlantArmor.tangledEntities.containsKey(le)) {
+			PlantArmor.addDamage(le, event.getFinalDamage());
+		}
+	}
+
+
+
 	@EventHandler
 	public void onRightClickBlock(PlayerInteractEvent event) {
 		if (event.getClickedBlock() == null) {

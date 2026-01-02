@@ -415,7 +415,8 @@ public class ProjectAddons extends JavaPlugin {
 		config.addDefault("Abilities.Water.PlantArmor.SubAbilities.Tangle.Radius", 0.45);
 		config.addDefault("Abilities.Water.PlantArmor.SubAbilities.Tangle.Duration", 3000);
 		config.addDefault("Abilities.Water.PlantArmor.SubAbilities.Tangle.Range", 18);
-		
+		config.addDefault("Abilities.Water.PlantArmor.SubAbilities.Tangle.Threshold", 3.0);
+
 		// PlantArmor - Leap
 		config.addDefault("Abilities.Water.PlantArmor.SubAbilities.Leap.Cost", 100);
 		config.addDefault("Abilities.Water.PlantArmor.SubAbilities.Leap.Cooldown", 2500);
