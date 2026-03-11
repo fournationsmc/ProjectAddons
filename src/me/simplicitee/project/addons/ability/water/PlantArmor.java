@@ -16,6 +16,7 @@ import com.projectkorra.projectkorra.util.DamageHandler;
 import com.projectkorra.projectkorra.util.MovementHandler;
 import com.projectkorra.projectkorra.util.TempArmor;
 import com.projectkorra.projectkorra.util.TempBlock;
+import commonslang3.projectkorra.lang3.tuple.Pair;
 import me.simplicitee.project.addons.ProjectAddons;
 import me.simplicitee.project.addons.Util;
 import me.simplicitee.project.addons.util.versionadapter.PotionEffectAdapter;
@@ -38,12 +39,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import me.simplicitee.project.addons.util.TangleData; // STORES ALL OF TANGLE DATA
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
 public class PlantArmor extends PlantAbility implements AddonAbility, MultiAbility {
@@ -103,6 +102,8 @@ public class PlantArmor extends PlantAbility implements AddonAbility, MultiAbili
 	@Attribute("Tangle_Range")
 	private double tRange;
 	private long tDuration;
+	@Attribute("TangleThreshold")
+	private double tThreshold;
 	
 	private int angle;
 	
@@ -184,6 +185,7 @@ public class PlantArmor extends PlantAbility implements AddonAbility, MultiAbili
 			this.tRadius = ProjectAddons.instance.getConfig().getDouble("Abilities.Water.PlantArmor.SubAbilities.Tangle.Radius");
 			this.tRange = ProjectAddons.instance.getConfig().getDouble("Abilities.Water.PlantArmor.SubAbilities.Tangle.Range");
 			this.tDuration = ProjectAddons.instance.getConfig().getLong("Abilities.Water.PlantArmor.SubAbilities.Tangle.Duration");
+			this.tThreshold = ProjectAddons.instance.getConfig().getDouble("Abilities.Water.PlantArmor.SubAbilities.Tangle.Threshold");
 			this.angle = 0;
 			
 			this.gMax = ProjectAddons.instance.getConfig().getInt("Abilities.Water.PlantArmor.SubAbilities.Grapple.Range");
@@ -510,39 +512,78 @@ public class PlantArmor extends PlantAbility implements AddonAbility, MultiAbili
 			}
 		}
 	}
-	
+
+	public static final Map<LivingEntity, TangleData> tangledEntities = new ConcurrentHashMap<>();
+
 	private void progressTangle() {
 		if (player.getEyeLocation().distance(current) > tRange) {
 			this.reset();
 			return;
 		}
-		
+
 		current.add(direction);
-		
+
 		if (!current.getBlock().isPassable()) {
 			this.reset();
 			return;
 		}
-		
+
 		for (Entity e : GeneralMethods.getEntitiesAroundPoint(current, tRadius + 0.5)) {
 			if (e instanceof LivingEntity && e.getEntityId() != player.getEntityId()) {
-				new MovementHandler((LivingEntity) e, this).stopWithDuration(tDuration / 1000 * 20, ChatColor.DARK_AQUA + "* Tangled *");
-				new TempBlock(e.getLocation().getBlock(), Material.OAK_LEAVES).setRevertTime(tDuration);
+				LivingEntity le = (LivingEntity) e;
+
+				MovementHandler mh = new MovementHandler(le, this);
+				TempBlock tb = new TempBlock(le.getLocation().getBlock(), Material.OAK_LEAVES);
+				tb.setRevertTime(tDuration);
+
+				mh.stopWithDuration(tDuration / 1000 * 20, ChatColor.DARK_AQUA + "* Tangled *");
+				tangledEntities.put(le, new TangleData(player, tThreshold, mh, tb));
+
 				this.reset();
 				return;
 			}
 		}
-		
+
 		for (int i = 0; i < 3; ++i) {
 			Vector ov = GeneralMethods.getOrthogonalVector(direction, (angle + (120 * i)), tRadius);
 			current.add(ov);
 			GeneralMethods.displayColoredParticle(Util.LEAF_COLOR, current);
 			current.subtract(ov);
 		}
-		
+
 		angle += 30;
 	}
-	
+
+
+	public static void addDamage(LivingEntity le, double damage) {
+		TangleData data = PlantArmor.tangledEntities.get(le);
+		if (data == null) return;
+
+		double newThreshold = data.getThreshold() - damage;
+
+		if (newThreshold <= 0) {
+			// Remove tangle effect
+			PlantArmor.tangledEntities.remove(le);
+
+			// Revert movement and temp block
+			if (data.getMovementHandler() != null) {
+				data.getMovementHandler().stopWithDuration(0, "");
+			}
+			if (data.getTempBlock() != null) {
+				data.getTempBlock().revertBlock();
+			}
+
+			le.sendMessage(ChatColor.RED + "You have broken free from Tangle!");
+		} else {
+			// Update remaining threshold
+			data.setThreshold(newThreshold);
+			PlantArmor.tangledEntities.put(le, data);
+		}
+	}
+
+
+
+
 	private void leap() {
 		Location ground = player.getLocation();
 		
@@ -770,7 +811,9 @@ public class PlantArmor extends PlantAbility implements AddonAbility, MultiAbili
 	public static enum ArmorAbility {
 		VINEWHIP("VineWhip", true, ClickType.LEFT_CLICK, null),
 		RAZORLEAF("RazorLeaf", true, ClickType.SHIFT_DOWN, (player -> !CoreAbility.hasAbility(player, RazorLeaf.class))),
-		TANGLE("Tangle", true, ClickType.LEFT_CLICK, null),
+		TANGLE("Tangle", true, ClickType.LEFT_CLICK,
+			player -> !GeneralMethods.isWeapon(player.getInventory().getItemInMainHand().getType())
+				&& !GeneralMethods.isWeapon(player.getInventory().getItemInOffHand().getType())),
 		GRAPPLE("Grapple", true, ClickType.LEFT_CLICK, null),
 		LEAP("Leap", true, ClickType.LEFT_CLICK, (player -> player.isOnGround())),
 		LEAFSHIELD("LeafShield", true, ClickType.SHIFT_DOWN, null),
